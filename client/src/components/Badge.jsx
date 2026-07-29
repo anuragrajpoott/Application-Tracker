@@ -11,12 +11,14 @@ const variants = {
   Ghosted: "bg-gray-200 text-gray-700",
 };
 
-function Badge({ children, className }) {
+const defaultVariant = "bg-slate-100 text-slate-700";
+
+export default function Badge({ children, className }) {
   return (
     <span
       className={clsx(
         "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
-        variants[children] || "bg-slate-100 text-slate-700",
+        variants[children] ?? defaultVariant,
         className
       )}
     >
@@ -24,5 +26,3 @@ function Badge({ children, className }) {
     </span>
   );
 }
-
-export default Badge;

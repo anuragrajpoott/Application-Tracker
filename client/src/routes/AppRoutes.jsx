@@ -2,18 +2,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 
-import Dashboard from "../pages/Dashboard";
-import Applications from "../pages/Applications";
 import AddApplication from "../pages/AddApplication";
+import Applications from "../pages/Applications";
+import Dashboard from "../pages/Dashboard";
 import EditApplication from "../pages/EditApplication";
 import NotFound from "../pages/NotFound";
 
-function AppRoutes() {
+export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
-
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/applications" element={<Applications />} />
         <Route path="/applications/new" element={<AddApplication />} />
@@ -27,5 +26,3 @@ function AppRoutes() {
     </Routes>
   );
 }
-
-export default AppRoutes;

@@ -20,14 +20,6 @@ export const PLATFORM_OPTIONS = [
   "Other",
 ];
 
-export const WORK_MODE_OPTIONS = [
-  "Remote",
-  "Hybrid",
-  "Onsite",
-];
+export const WORK_MODE_OPTIONS = ["Remote", "Hybrid", "Onsite"];
 
-export const PRIORITY_OPTIONS = [
-  "Low",
-  "Medium",
-  "High",
-];
+export const PRIORITY_OPTIONS = ["Low", "Medium", "High"];

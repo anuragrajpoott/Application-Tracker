@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "../ui/Button";
+import Button from "./Button";
 import FormField from "../ui/FormField";
-import Input from "../ui/Input";
-import Select from "../ui/Select";
-import Textarea from "../ui/Textarea";
+import Input from "./Input";
+import Select from "./Select";
+import Textarea from "./Textarea";
 
 import {
   STATUS_OPTIONS,
   PLATFORM_OPTIONS,
   WORK_MODE_OPTIONS,
   PRIORITY_OPTIONS,
-} from "../../utils/constants";
+} from "../utils/constants";
 
 function ApplicationForm({
   defaultValues = {},
