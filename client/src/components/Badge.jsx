@@ -8,17 +8,17 @@ const variants = {
   "Interview Scheduled": "bg-amber-100 text-amber-700",
   Offer: "bg-green-100 text-green-700",
   Rejected: "bg-red-100 text-red-700",
-  Ghosted: "bg-gray-200 text-gray-700",
+  Ghosted: "bg-slate-200 text-slate-700",
 };
 
 const defaultVariant = "bg-slate-100 text-slate-700";
 
-export default function Badge({ children, className }) {
+export default function Badge({ status, children, className }) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
-        variants[children] ?? defaultVariant,
+        "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
+        variants[status] ?? defaultVariant,
         className
       )}
     >

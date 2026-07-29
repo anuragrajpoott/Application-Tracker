@@ -1,19 +1,23 @@
 import { Link } from "react-router-dom";
 
-function NotFound() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-6xl font-bold">404</h1>
-      <p className="text-gray-500">Page not found.</p>
+import Button from "../components/Button";
 
-      <Link
-        to="/dashboard"
-        className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-      >
-        Go to Dashboard
+export default function NotFound() {
+  return (
+    <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 text-center">
+      <h1 className="text-7xl font-bold text-slate-900">404</h1>
+
+      <h2 className="mt-4 text-2xl font-semibold text-slate-800">
+        Page Not Found
+      </h2>
+
+      <p className="mt-2 max-w-md text-slate-500">
+        The page you're looking for doesn't exist or may have been moved.
+      </p>
+
+      <Link to="/dashboard" className="mt-8">
+        <Button>Go to Dashboard</Button>
       </Link>
     </div>
   );
 }
-
-export default NotFound;

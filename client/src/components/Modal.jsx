@@ -1,35 +1,33 @@
-import Button from "./Button";
+import { X } from "lucide-react";
 
-export default function Modal({
-  open,
-  title,
-  children,
-  onClose,
-  onConfirm,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
-  confirmVariant = "primary",
-}) {
+export default function Modal({ open, title, children, onClose }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl">
-        <div className="border-b border-slate-200 px-6 py-4">
-          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl rounded-2xl bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+          <h2 className="text-lg font-semibold text-slate-900">
+            {title}
+          </h2>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            aria-label="Close modal"
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        <div className="px-6 py-5">{children}</div>
-
-        <div className="flex justify-end gap-3 border-t border-slate-200 px-6 py-4">
-          <Button variant="secondary" onClick={onClose}>
-            {cancelText}
-          </Button>
-
-          <Button variant={confirmVariant} onClick={onConfirm}>
-            {confirmText}
-          </Button>
-        </div>
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

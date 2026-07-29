@@ -2,20 +2,14 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "./Button";
-import FormField from "../ui/FormField";
 import Input from "./Input";
 import Select from "./Select";
 import Textarea from "./Textarea";
 
-import {
-  STATUS_OPTIONS,
-  PLATFORM_OPTIONS,
-  WORK_MODE_OPTIONS,
-  PRIORITY_OPTIONS,
-} from "../utils/constants";
+import { OPTIONS } from "../utils/constants";
 
-function ApplicationForm({
-  defaultValues = {},
+export default function ApplicationForm({
+  application,
   onSubmit,
   loading = false,
 }) {
@@ -25,116 +19,139 @@ function ApplicationForm({
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues,
+    defaultValues: application,
   });
 
   useEffect(() => {
-    reset(defaultValues);
-  }, [defaultValues, reset]);
+    reset(application);
+  }, [application, reset]);
+
+  const renderError = (error) =>
+    error ? (
+      <p className="mt-1 text-sm text-red-600">{error.message}</p>
+    ) : null;
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
-        <FormField
-          label="Company"
-          required
-          error={errors.company?.message}
-        >
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Company *
+          </label>
+
           <Input
             {...register("company", {
               required: "Company is required",
             })}
           />
-        </FormField>
 
-        <FormField
-          label="Role"
-          required
-          error={errors.role?.message}
-        >
+          {renderError(errors.company)}
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Role *
+          </label>
+
           <Input
             {...register("role", {
               required: "Role is required",
             })}
           />
-        </FormField>
 
-        <FormField label="Platform">
+          {renderError(errors.role)}
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Platform
+          </label>
+
           <Select {...register("platform")}>
-            {PLATFORM_OPTIONS.map((option) => (
+            {OPTIONS.platform.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
-        </FormField>
+        </div>
 
-        <FormField label="Status">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Status
+          </label>
+
           <Select {...register("status")}>
-            {STATUS_OPTIONS.map((option) => (
+            {OPTIONS.status.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
-        </FormField>
+        </div>
 
-        <FormField label="Work Mode">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Work Mode
+          </label>
+
           <Select {...register("workMode")}>
-            {WORK_MODE_OPTIONS.map((option) => (
+            {OPTIONS.workMode.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
-        </FormField>
+        </div>
 
-        <FormField label="Priority">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Priority
+          </label>
+
           <Select {...register("priority")}>
-            {PRIORITY_OPTIONS.map((option) => (
+            {OPTIONS.priority.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
-        </FormField>
+        </div>
 
-        <FormField label="Applied Date">
-          <Input
-            type="date"
-            {...register("appliedDate")}
-          />
-        </FormField>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Applied Date
+          </label>
 
-        <FormField label="Job URL">
+          <Input type="date" {...register("appliedDate")} />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Job URL
+          </label>
+
           <Input
             type="url"
-            placeholder="https://..."
+            placeholder="https://example.com"
             {...register("jobUrl")}
           />
-        </FormField>
+        </div>
       </div>
 
-      <FormField label="Notes">
-        <Textarea
-          rows={5}
-          {...register("notes")}
-        />
-      </FormField>
+      <div>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Notes
+        </label>
+
+        <Textarea rows={5} {...register("notes")} />
+      </div>
 
       <div className="flex justify-end">
-        <Button
-          type="submit"
-          loading={loading}
-        >
-          Save Application
+        <Button type="submit" loading={loading}>
+          {application ? "Update Application" : "Add Application"}
         </Button>
       </div>
     </form>
   );
 }
-
-export default ApplicationForm;
