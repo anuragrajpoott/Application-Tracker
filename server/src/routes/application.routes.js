@@ -21,9 +21,7 @@ import validate from "../middleware/validate.js";
 const router = Router();
 
 const validateApplicationId = [
-  param("id")
-    .isMongoId()
-    .withMessage("Invalid application ID."),
+  param("id").isMongoId().withMessage("Invalid application ID."),
   validate,
 ];
 

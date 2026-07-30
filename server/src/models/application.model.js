@@ -2,12 +2,8 @@
 
 import mongoose from "mongoose";
 import {
-  APPLICATION_STATUS,
   APPLICATION_PLATFORMS,
-  WORK_MODES,
-  EMPLOYMENT_TYPES,
-  PRIORITIES,
-  CURRENCIES,
+  APPLICATION_STATUS,
 } from "../constants/application.constants.js";
 
 const applicationSchema = new mongoose.Schema(
@@ -33,46 +29,10 @@ const applicationSchema = new mongoose.Schema(
     platform: {
       type: String,
       enum: APPLICATION_PLATFORMS,
-      default: "Company Website",
-    },
-
-    workMode: {
-      type: String,
-      enum: WORK_MODES,
-      default: "Hybrid",
-    },
-
-    employmentType: {
-      type: String,
-      enum: EMPLOYMENT_TYPES,
-      default: "Full-time",
-    },
-
-    priority: {
-      type: String,
-      enum: PRIORITIES,
-      default: "Medium",
+      default: "LinkedIn",
     },
 
     location: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-
-    salary: {
-      type: Number,
-      min: 0,
-      default: null,
-    },
-
-    currency: {
-      type: String,
-      enum: CURRENCIES,
-      default: "INR",
-    },
-
-    jobUrl: {
       type: String,
       trim: true,
       default: "",
@@ -83,9 +43,13 @@ const applicationSchema = new mongoose.Schema(
       default: Date.now,
     },
 
-    deadline: {
+    followUpDate: {
       type: Date,
-      default: null,
+      default: () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 7);
+        return date;
+      },
     },
 
     referred: {
@@ -93,9 +57,10 @@ const applicationSchema = new mongoose.Schema(
       default: false,
     },
 
-    followUpDate: {
-      type: Date,
-      default: null,
+    jobUrl: {
+      type: String,
+      trim: true,
+      default: "",
     },
 
     notes: {
@@ -109,7 +74,7 @@ const applicationSchema = new mongoose.Schema(
   }
 );
 
-applicationSchema.index({ createdAt: -1 });
+applicationSchema.index({ appliedDate: -1 });
 
 const Application = mongoose.model("Application", applicationSchema);
 
