@@ -1,14 +1,16 @@
+// src/components/Input.jsx
+
 import { forwardRef } from "react";
 import clsx from "clsx";
 
-const Textarea = forwardRef(function Textarea(
-  { className, rows = 5, ...props },
+const Input = forwardRef(function Input(
+  { className, type = "text", ...props },
   ref
 ) {
   return (
-    <textarea
+    <input
       ref={ref}
-      rows={rows}
+      type={type || "text"}
       className={clsx(
         "w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition",
         "placeholder:text-slate-400",
@@ -21,6 +23,6 @@ const Textarea = forwardRef(function Textarea(
   );
 });
 
-Textarea.displayName = "Textarea";
+Input.displayName = "Input";
 
-export default Textarea;
+export default Input;

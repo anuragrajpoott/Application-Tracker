@@ -1,14 +1,16 @@
+// src/components/ApplicationsTable.jsx
+
 import { Pencil, Trash2 } from "lucide-react";
 
-import Badge from "./Badge";
-import Button from "./Button";
+import Badge from "./Badge.jsx";
+import Button from "./Button.jsx";
 
 export default function ApplicationsTable({
   applications,
   onEdit,
   onDelete,
 }) {
-  if (!applications.length) {
+  if (applications.length === 0) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white py-16 text-center shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900">
@@ -16,7 +18,7 @@ export default function ApplicationsTable({
         </h2>
 
         <p className="mt-2 text-slate-500">
-          Try changing your search or add a new application.
+          Add your first job application to get started.
         </p>
       </div>
     );
@@ -52,9 +54,7 @@ export default function ApplicationsTable({
                 </td>
 
                 <td className="px-6 py-4">
-                  <Badge status={application.status}>
-                    {application.status}
-                  </Badge>
+                  <Badge status={application.status} />
                 </td>
 
                 <td className="px-6 py-4 text-slate-600">
@@ -62,7 +62,9 @@ export default function ApplicationsTable({
                 </td>
 
                 <td className="px-6 py-4 text-slate-600">
-                  {new Date(application.appliedDate).toLocaleDateString()}
+                  {application.appliedDate
+                    ? new Date(application.appliedDate).toLocaleDateString()
+                    : "-"}
                 </td>
 
                 <td className="px-6 py-4">
@@ -70,6 +72,7 @@ export default function ApplicationsTable({
                     <Button
                       variant="secondary"
                       onClick={() => onEdit(application)}
+                      aria-label="Edit application"
                     >
                       <Pencil size={16} />
                     </Button>
@@ -77,6 +80,7 @@ export default function ApplicationsTable({
                     <Button
                       variant="danger"
                       onClick={() => onDelete(application)}
+                      aria-label="Delete application"
                     >
                       <Trash2 size={16} />
                     </Button>

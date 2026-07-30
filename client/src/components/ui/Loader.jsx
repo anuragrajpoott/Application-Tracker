@@ -1,3 +1,5 @@
+// src/components/Loader.jsx
+
 export default function Loader({ text = "Loading..." }) {
   return (
     <div
@@ -9,6 +11,8 @@ export default function Loader({ text = "Loading..." }) {
         aria-hidden="true"
         className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600"
       />
+
+      <span className="sr-only">{text}</span>
 
       <p className="text-sm text-slate-500">{text}</p>
     </div>

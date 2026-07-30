@@ -1,18 +1,16 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+// src/routes/AppRoutes.jsx
 
-import Layout from "../layout/Layout";
+import { Route, Routes } from "react-router-dom";
 
-import Applications from "../pages/Applications";
-import Dashboard from "../pages/Dashboard";
-import NotFound from "../pages/NotFound";
+import Layout from "../layout/Layout.jsx";
+import Home from "../pages/Home.jsx";
+import NotFound from "../pages/NotFound.jsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/applications" element={<Applications />} />
+        <Route index element={<Home />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

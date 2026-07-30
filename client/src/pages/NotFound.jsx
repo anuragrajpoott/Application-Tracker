@@ -1,6 +1,8 @@
+// src/pages/NotFound.jsx
+
 import { Link } from "react-router-dom";
 
-import Button from "../components/Button";
+import Button from "../components/Button.jsx";
 
 export default function NotFound() {
   return (
@@ -12,11 +14,11 @@ export default function NotFound() {
       </h2>
 
       <p className="mt-2 max-w-md text-slate-500">
-        The page you're looking for doesn't exist or may have been moved.
+        The page you're looking for doesn't exist.
       </p>
 
-      <Link to="/dashboard" className="mt-8">
-        <Button>Go to Dashboard</Button>
+      <Link to="/" className="mt-8">
+        <Button>Go Home</Button>
       </Link>
     </div>
   );

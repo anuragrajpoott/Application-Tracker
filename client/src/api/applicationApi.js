@@ -1,4 +1,6 @@
-import api from "./axios";
+// src/api/applicationApi.js
+
+import api from "./axios.js";
 
 const ENDPOINT = "/applications";
 
@@ -18,10 +20,11 @@ export async function createApplication(application) {
 }
 
 export async function updateApplication(id, application) {
-  const { data } = await api.put(`${ENDPOINT}/${id}`, application);
+  const { data } = await api.patch(`${ENDPOINT}/${id}`, application);
   return data.data;
 }
 
 export async function deleteApplication(id) {
-  await api.delete(`${ENDPOINT}/${id}`);
+  const { data } = await api.delete(`${ENDPOINT}/${id}`);
+  return data.data;
 }

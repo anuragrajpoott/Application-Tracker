@@ -1,3 +1,5 @@
+// src/components/Button.jsx
+
 import clsx from "clsx";
 
 const variants = {
@@ -31,12 +33,13 @@ export default function Button({
     <button
       type={type}
       disabled={disabled || loading}
+      aria-disabled={disabled || loading}
       className={clsx(
         "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-colors",
         "focus:outline-none focus:ring-2 focus:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-60",
-        variants[variant],
-        sizes[size],
+        variants[variant] ?? variants.primary,
+        sizes[size] ?? sizes.md,
         className
       )}
       {...props}

@@ -1,21 +1,18 @@
+// src/utils/constants.js
+
 export const OPTIONS = {
   status: [
     "Wishlist",
     "Applied",
-    "OA Received",
-    "OA Cleared",
     "Interview Scheduled",
     "Offer",
     "Rejected",
-    "Ghosted",
   ],
 
   platform: [
     "LinkedIn",
     "Naukri",
-    "Instahyre",
     "Wellfound",
-    "Cutshort",
     "Referral",
     "Company Website",
     "Other",
@@ -23,5 +20,14 @@ export const OPTIONS = {
 
   workMode: ["Remote", "Hybrid", "Onsite"],
 
+  employmentType: [
+    "Full-time",
+    "Internship",
+    "Contract",
+    "Part-time",
+  ],
+
   priority: ["Low", "Medium", "High"],
+
+  currency: ["INR", "USD"],
 };

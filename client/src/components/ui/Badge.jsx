@@ -1,14 +1,13 @@
+// src/components/Badge.jsx
+
 import clsx from "clsx";
 
 const variants = {
   Wishlist: "bg-slate-100 text-slate-700",
   Applied: "bg-blue-100 text-blue-700",
-  "OA Received": "bg-purple-100 text-purple-700",
-  "OA Cleared": "bg-indigo-100 text-indigo-700",
   "Interview Scheduled": "bg-amber-100 text-amber-700",
   Offer: "bg-green-100 text-green-700",
   Rejected: "bg-red-100 text-red-700",
-  Ghosted: "bg-slate-200 text-slate-700",
 };
 
 const defaultVariant = "bg-slate-100 text-slate-700";
@@ -22,7 +21,7 @@ export default function Badge({ status, children, className }) {
         className
       )}
     >
-      {children}
+      {children ?? status}
     </span>
   );
 }
