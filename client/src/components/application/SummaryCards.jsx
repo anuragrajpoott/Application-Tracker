@@ -5,52 +5,45 @@ export default function SummaryCards({ applications }) {
     (counts, { status }) => {
       counts.total += 1;
 
-      switch (status) {
-        case "Applied":
-          counts.applied += 1;
-          break;
-        case "Interview Scheduled":
-          counts.interviews += 1;
-          break;
-        case "Offer":
-          counts.offers += 1;
-          break;
-        case "Rejected":
-          counts.rejected += 1;
-          break;
-        default:
-          break;
+      if (status === "Wishlist" || status === "Applied") {
+        counts.active += 1;
+      }
+
+      if (status === "Interview") {
+        counts.interviews += 1;
+      }
+
+      if (status === "Offer") {
+        counts.offers += 1;
       }
 
       return counts;
     },
     {
       total: 0,
-      applied: 0,
+      active: 0,
       interviews: 0,
       offers: 0,
-      rejected: 0,
     }
   );
 
   const cards = [
-    { title: "Total", value: summary.total },
-    { title: "Applied", value: summary.applied },
+    { title: "Applications", value: summary.total },
+    { title: "Active", value: summary.active },
     { title: "Interviews", value: summary.interviews },
     { title: "Offers", value: summary.offers },
-    { title: "Rejected", value: summary.rejected },
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map(({ title, value }) => (
         <div
           key={title}
-          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
         >
           <p className="text-sm text-slate-500">{title}</p>
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">
+          <h2 className="mt-2 text-3xl font-semibold text-slate-900">
             {value}
           </h2>
         </div>

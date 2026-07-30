@@ -4,7 +4,11 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Select from "../ui/Select";
 
-import { OPTIONS } from "../../utils/constants";
+import {
+  PLATFORM_OPTIONS,
+  SORT_OPTIONS,
+  STATUS_OPTIONS,
+} from "../../utils/constants";
 
 export default function Filter({
   filters,
@@ -19,11 +23,11 @@ export default function Filter({
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
         <Input
           name="search"
-          placeholder="Search company or role..."
+          placeholder="Search..."
           value={filters.search}
           onChange={handleChange}
         />
@@ -34,9 +38,9 @@ export default function Filter({
           onChange={handleChange}
         >
           <option value="">All Statuses</option>
-          {OPTIONS.status.map((option) => (
-            <option key={option} value={option}>
-              {option}
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {status}
             </option>
           ))}
         </Select>
@@ -47,36 +51,23 @@ export default function Filter({
           onChange={handleChange}
         >
           <option value="">All Platforms</option>
-          {OPTIONS.platform.map((option) => (
-            <option key={option} value={option}>
-              {option}
+          {PLATFORM_OPTIONS.map((platform) => (
+            <option key={platform} value={platform}>
+              {platform}
             </option>
           ))}
         </Select>
 
         <Select
-          name="workMode"
-          value={filters.workMode}
+          name="sort"
+          value={filters.sort}
           onChange={handleChange}
         >
-          <option value="">All Work Modes</option>
-          {OPTIONS.workMode.map((option) => (
-            <option key={option} value={option}>
-              {option}
+          {SORT_OPTIONS.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
             </option>
           ))}
-        </Select>
-
-        <Select
-          name="sortBy"
-          value={filters.sortBy}
-          onChange={handleChange}
-        >
-          <option value="createdAt">Newest</option>
-          <option value="appliedDate">Applied Date</option>
-          <option value="company">Company</option>
-          <option value="role">Role</option>
-          <option value="status">Status</option>
         </Select>
 
         <Button

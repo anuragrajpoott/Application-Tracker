@@ -1,216 +1,131 @@
 // src/components/application/ApplicationForm.jsx
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+
+import {
+  PLATFORM_OPTIONS,
+  STATUS_OPTIONS,
+} from "../../utils/constants";
 
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Select from "../ui/Select";
 import Textarea from "../ui/Textarea";
 
-import { OPTIONS } from "../../utils/constants";
+const defaultValues = {
+  company: "",
+  role: "",
+  status: "Applied",
+  platform: "LinkedIn",
+  location: "",
+  appliedDate: new Date().toISOString().split("T")[0],
+  followUpDate: new Date(
+    Date.now() + 7 * 24 * 60 * 60 * 1000
+  )
+    .toISOString()
+    .split("T")[0],
+  referred: false,
+  jobUrl: "",
+  notes: "",
+};
 
 export default function ApplicationForm({
   application,
   onSubmit,
   loading = false,
 }) {
+  const [showMore, setShowMore] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: application,
+    defaultValues,
   });
 
   useEffect(() => {
-    reset(application);
+    reset(application ?? defaultValues);
   }, [application, reset]);
 
-  const submitLabel = application
-    ? "Update Application"
-    : "Add Application";
-
-  const renderError = (field) => {
-    if (!errors[field]) return null;
-
-    return (
-      <p className="mt-1 text-sm text-red-600">
-        {errors[field].message}
-      </p>
-    );
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid gap-6 md:grid-cols-2">
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Company *
-          </label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-5"
+    >
+      <div className="grid gap-4 md:grid-cols-2">
+        <Input
+          label="Company *"
+          {...register("company", {
+            required: "Company is required.",
+          })}
+          error={errors.company?.message}
+        />
+
+        <Input
+          label="Role *"
+          {...register("role", {
+            required: "Role is required.",
+          })}
+          error={errors.role?.message}
+        />
+
+        <Select
+          label="Status"
+          {...register("status")}
+        >
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status}>{status}</option>
+          ))}
+        </Select>
+
+        <Select
+          label="Platform"
+          {...register("platform")}
+        >
+          {PLATFORM_OPTIONS.map((platform) => (
+            <option key={platform}>{platform}</option>
+          ))}
+        </Select>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setShowMore((v) => !v)}
+        className="text-sm font-medium text-blue-600 hover:text-blue-700"
+      >
+        {showMore
+          ? "Hide Additional Details"
+          : "Additional Details"}
+      </button>
+
+      {showMore && (
+        <div className="grid gap-4 md:grid-cols-2">
           <Input
-            {...register("company", {
-              required: "Company is required",
-            })}
+            label="Location"
+            {...register("location")}
           />
-          {renderError("company")}
-        </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Role *
-          </label>
           <Input
-            {...register("role", {
-              required: "Role is required",
-            })}
+            type="date"
+            label="Applied Date"
+            {...register("appliedDate")}
           />
-          {renderError("role")}
-        </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Platform
-          </label>
-          <Select {...register("platform")}>
-            {OPTIONS.platform.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Status
-          </label>
-          <Select {...register("status")}>
-            {OPTIONS.status.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Work Mode
-          </label>
-          <Select {...register("workMode")}>
-            {OPTIONS.workMode.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Employment Type
-          </label>
-          <Select {...register("employmentType")}>
-            {OPTIONS.employmentType.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Priority
-          </label>
-          <Select {...register("priority")}>
-            {OPTIONS.priority.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Location
-          </label>
-          <Input {...register("location")} />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Salary
-          </label>
           <Input
-            type="number"
-            min={0}
-            {...register("salary", {
-              valueAsNumber: true,
-              min: {
-                value: 0,
-                message: "Salary must be at least 0",
-              },
-            })}
+            type="date"
+            label="Follow-up"
+            {...register("followUpDate")}
           />
-          {renderError("salary")}
-        </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Currency
-          </label>
-          <Select {...register("currency")}>
-            {OPTIONS.currency.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Applied Date
-          </label>
-          <Input type="date" {...register("appliedDate")} />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Deadline
-          </label>
-          <Input type="date" {...register("deadline")} />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Follow-up Date
-          </label>
-          <Input type="date" {...register("followUpDate")} />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="mb-2 block text-sm font-medium">
-            Job URL
-          </label>
           <Input
             type="url"
-            placeholder="https://example.com"
-            {...register("jobUrl", {
-              pattern: {
-                value: /^https?:\/\/.+$/i,
-                message: "Enter a valid URL",
-              },
-            })}
+            label="Job URL"
+            {...register("jobUrl")}
           />
-          {renderError("jobUrl")}
-        </div>
 
-        <div className="md:col-span-2">
           <label className="flex items-center gap-2 text-sm font-medium">
             <input
               type="checkbox"
@@ -218,19 +133,20 @@ export default function ApplicationForm({
             />
             Referred
           </label>
-        </div>
 
-        <div className="md:col-span-2">
-          <label className="mb-2 block text-sm font-medium">
-            Notes
-          </label>
-          <Textarea rows={5} {...register("notes")} />
+          <div className="md:col-span-2">
+            <Textarea
+              label="Notes"
+              rows={4}
+              {...register("notes")}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex justify-end">
         <Button type="submit" loading={loading}>
-          {submitLabel}
+          {application ? "Update" : "Save"}
         </Button>
       </div>
     </form>

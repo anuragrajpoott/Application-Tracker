@@ -26,7 +26,8 @@ export default function Button({
   size = "md",
   loading = false,
   disabled = false,
-  className = "",
+  fullWidth = false,
+  className,
   ...props
 }) {
   const isDisabled = disabled || loading;
@@ -35,11 +36,12 @@ export default function Button({
     <button
       type={type}
       disabled={isDisabled}
-      aria-disabled={isDisabled}
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-colors",
+        "inline-flex shrink-0 items-center justify-center gap-2 rounded-xl font-medium",
+        "transition-all",
         "focus:outline-none focus:ring-2 focus:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-60",
+        fullWidth && "w-full",
         variants[variant] ?? variants.primary,
         sizes[size] ?? sizes.md,
         className
@@ -48,8 +50,8 @@ export default function Button({
     >
       {loading && (
         <span
-          aria-hidden="true"
           className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+          aria-hidden="true"
         />
       )}
 

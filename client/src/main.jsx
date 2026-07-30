@@ -2,21 +2,20 @@
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import App from "./App";
 import "./index.css";
 
-const rootElement = document.getElementById("root");
-
-createRoot(rootElement).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <App />
 
       <Toaster
         position="top-right"
+        gutter={8}
         toastOptions={{
           duration: 3000,
           style: {

@@ -1,33 +1,28 @@
-// src/utils/constants.js wow
+// src/utils/constants.js
 
-export const OPTIONS = {
-  status: [
-    "Wishlist",
-    "Applied",
-    "Interview Scheduled",
-    "Offer",
-    "Rejected",
-  ],
+export const STATUS_OPTIONS = [
+  "Wishlist",
+  "Applied",
+  "Interview",
+  "Offer",
+  "Rejected",
+];
 
-  platform: [
-    "LinkedIn",
-    "Naukri",
-    "Wellfound",
-    "Referral",
-    "Company Website",
-    "Other",
-  ],
+export const PLATFORM_OPTIONS = [
+  "LinkedIn",
+  "Company Website",
+  "Wellfound",
+  "Referral",
+  "Naukri",
+  "Internshala",
+  "Unstop",
+  "Other",
+];
 
-  workMode: ["Remote", "Hybrid", "Onsite"],
-
-  employmentType: [
-    "Full-time",
-    "Internship",
-    "Contract",
-    "Part-time",
-  ],
-
-  priority: ["Low", "Medium", "High"],
-
-  currency: ["INR", "USD"],
-};
+export const SORT_OPTIONS = [
+  { label: "Newest", value: "newest" },
+  { label: "Oldest", value: "oldest" },
+  { label: "Company (A-Z)", value: "companyAsc" },
+  { label: "Company (Z-A)", value: "companyDesc" },
+  { label: "Follow-up", value: "followUp" },
+];

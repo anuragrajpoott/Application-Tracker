@@ -4,27 +4,26 @@ import api from "./axios";
 
 const ENDPOINT = "/applications";
 
-export async function getApplications(params = {}) {
+export const getApplications = async (params = {}) => {
   const { data } = await api.get(ENDPOINT, { params });
   return data.data.applications;
-}
+};
 
-export async function getApplication(id) {
+export const getApplication = async (id) => {
   const { data } = await api.get(`${ENDPOINT}/${id}`);
-  return data.data;
-}
+  return data.data.application;
+};
 
-export async function createApplication(application) {
+export const createApplication = async (application) => {
   const { data } = await api.post(ENDPOINT, application);
-  return data.data;
-}
+  return data.data.application;
+};
 
-export async function updateApplication(id, application) {
+export const updateApplication = async (id, application) => {
   const { data } = await api.patch(`${ENDPOINT}/${id}`, application);
-  return data.data;
-}
+  return data.data.application;
+};
 
-export async function deleteApplication(id) {
-  const { data } = await api.delete(`${ENDPOINT}/${id}`);
-  return data.data;
-}
+export const deleteApplication = async (id) => {
+  await api.delete(`${ENDPOINT}/${id}`);
+};

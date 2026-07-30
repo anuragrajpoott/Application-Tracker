@@ -3,38 +3,44 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 
-export default function Modal({ open, title, children, onClose }) {
+export default function Modal({
+  open,
+  title,
+  children,
+  onClose,
+}) {
   useEffect(() => {
     if (!open) return;
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
+    const handleKeyDown = ({ key }) => {
+      if (key === "Escape") {
         onClose();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
+    return () =>
       document.removeEventListener("keydown", handleKeyDown);
-    };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
       onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
     >
       <div
-        className="w-full max-w-2xl rounded-2xl bg-white shadow-xl"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+        className="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
           <h2
             id="modal-title"
             className="text-lg font-semibold text-slate-900"
@@ -45,14 +51,15 @@ export default function Modal({ open, title, children, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            aria-label="Close modal"
+            className="rounded-md p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="p-6">{children}</div>
+        <div className="overflow-y-auto p-5">
+          {children}
+        </div>
       </div>
     </div>
   );
