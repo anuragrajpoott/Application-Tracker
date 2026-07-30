@@ -1,4 +1,7 @@
+// src/routes/application.routes.js
+
 import { Router } from "express";
+import { param } from "express-validator";
 
 import {
   createApplication,
@@ -13,7 +16,16 @@ import {
   updateApplicationValidator,
 } from "../validators/application.validator.js";
 
+import validate from "../middleware/validate.js";
+
 const router = Router();
+
+const validateApplicationId = [
+  param("id")
+    .isMongoId()
+    .withMessage("Invalid application ID."),
+  validate,
+];
 
 router
   .route("/")
@@ -22,8 +34,9 @@ router
 
 router
   .route("/:id")
+  .all(validateApplicationId)
   .get(getApplicationById)
-  .put(updateApplicationValidator, updateApplication)
+  .patch(updateApplicationValidator, updateApplication)
   .delete(deleteApplication);
 
 export default router;

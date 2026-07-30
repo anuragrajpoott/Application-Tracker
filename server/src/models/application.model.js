@@ -1,30 +1,14 @@
+// src/models/application.model.js
+
 import mongoose from "mongoose";
-
-const STATUS = [
-  "Wishlist",
-  "Applied",
-  "OA Received",
-  "OA Cleared",
-  "Interview Scheduled",
-  "Offer",
-  "Rejected",
-  "Ghosted",
-];
-
-const PLATFORMS = [
-  "LinkedIn",
-  "Naukri",
-  "Instahyre",
-  "Wellfound",
-  "Cutshort",
-  "Referral",
-  "Company Website",
-  "Other",
-];
-
-const WORK_MODES = ["Remote", "Hybrid", "Onsite"];
-
-const PRIORITIES = ["Low", "Medium", "High"];
+import {
+  APPLICATION_STATUS,
+  APPLICATION_PLATFORMS,
+  WORK_MODES,
+  EMPLOYMENT_TYPES,
+  PRIORITIES,
+  CURRENCIES,
+} from "../constants/application.constants.js";
 
 const applicationSchema = new mongoose.Schema(
   {
@@ -40,16 +24,52 @@ const applicationSchema = new mongoose.Schema(
       trim: true,
     },
 
+    status: {
+      type: String,
+      enum: APPLICATION_STATUS,
+      default: "Applied",
+    },
+
+    platform: {
+      type: String,
+      enum: APPLICATION_PLATFORMS,
+      default: "Company Website",
+    },
+
+    workMode: {
+      type: String,
+      enum: WORK_MODES,
+      default: "Hybrid",
+    },
+
+    employmentType: {
+      type: String,
+      enum: EMPLOYMENT_TYPES,
+      default: "Full-time",
+    },
+
+    priority: {
+      type: String,
+      enum: PRIORITIES,
+      default: "Medium",
+    },
+
     location: {
       type: String,
       trim: true,
       default: "",
     },
 
-    platform: {
+    salary: {
+      type: Number,
+      min: 0,
+      default: null,
+    },
+
+    currency: {
       type: String,
-      enum: PLATFORMS,
-      required: true,
+      enum: CURRENCIES,
+      default: "INR",
     },
 
     jobUrl: {
@@ -60,47 +80,17 @@ const applicationSchema = new mongoose.Schema(
 
     appliedDate: {
       type: Date,
-      required: true,
+      default: Date.now,
     },
 
-    status: {
-      type: String,
-      enum: STATUS,
-      default: "Wishlist",
-    },
-
-    salary: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-
-    workMode: {
-      type: String,
-      enum: WORK_MODES,
-      default: "Remote",
-    },
-
-    referral: {
-      type: Boolean,
-      default: false,
-    },
-
-    resumeVersion: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-
-    priority: {
-      type: String,
-      enum: PRIORITIES,
-      default: "Medium",
-    },
-
-    interviewDate: {
+    deadline: {
       type: Date,
       default: null,
+    },
+
+    referred: {
+      type: Boolean,
+      default: false,
     },
 
     followUpDate: {
@@ -118,6 +108,8 @@ const applicationSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+applicationSchema.index({ createdAt: -1 });
 
 const Application = mongoose.model("Application", applicationSchema);
 

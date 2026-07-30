@@ -1,8 +1,8 @@
-import Application from "../models/application.model.js";
+// src/controllers/application.controller.js
 
+import Application from "../models/application.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-
 import asyncHandler from "../middleware/asyncHandler.js";
 
 export const getApplications = asyncHandler(async (req, res) => {
@@ -13,22 +13,24 @@ export const getApplications = asyncHandler(async (req, res) => {
     status,
     platform,
     workMode,
+    priority,
     sort = "newest",
   } = req.query;
 
-  const query = {};
+  const filter = {};
 
   if (search) {
-    query.$or = [
+    filter.$or = [
       { company: { $regex: search, $options: "i" } },
       { role: { $regex: search, $options: "i" } },
       { location: { $regex: search, $options: "i" } },
     ];
   }
 
-  if (status) query.status = status;
-  if (platform) query.platform = platform;
-  if (workMode) query.workMode = workMode;
+  if (status) filter.status = status;
+  if (platform) filter.platform = platform;
+  if (workMode) filter.workMode = workMode;
+  if (priority) filter.priority = priority;
 
   const sortOptions = {
     newest: { appliedDate: -1 },
@@ -36,18 +38,19 @@ export const getApplications = asyncHandler(async (req, res) => {
     companyAsc: { company: 1 },
     companyDesc: { company: -1 },
     updated: { updatedAt: -1 },
+    deadline: { deadline: 1 },
   };
 
   const currentPage = Number(page);
   const pageSize = Number(limit);
 
   const [applications, total] = await Promise.all([
-    Application.find(query)
+    Application.find(filter)
       .sort(sortOptions[sort] || sortOptions.newest)
       .skip((currentPage - 1) * pageSize)
       .limit(pageSize),
 
-    Application.countDocuments(query),
+    Application.countDocuments(filter),
   ]);
 
   res.status(200).json(
@@ -70,17 +73,21 @@ export const getApplicationById = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Application not found.");
   }
 
-  res
-    .status(200)
-    .json(new ApiResponse(200, "Application fetched successfully.", application));
+  res.status(200).json(
+    new ApiResponse(200, "Application fetched successfully.", {
+      application,
+    })
+  );
 });
 
 export const createApplication = asyncHandler(async (req, res) => {
   const application = await Application.create(req.body);
 
-  res
-    .status(201)
-    .json(new ApiResponse(201, "Application created successfully.", application));
+  res.status(201).json(
+    new ApiResponse(201, "Application created successfully.", {
+      application,
+    })
+  );
 });
 
 export const updateApplication = asyncHandler(async (req, res) => {
@@ -97,9 +104,11 @@ export const updateApplication = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Application not found.");
   }
 
-  res
-    .status(200)
-    .json(new ApiResponse(200, "Application updated successfully.", application));
+  res.status(200).json(
+    new ApiResponse(200, "Application updated successfully.", {
+      application,
+    })
+  );
 });
 
 export const deleteApplication = asyncHandler(async (req, res) => {
@@ -109,7 +118,9 @@ export const deleteApplication = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Application not found.");
   }
 
-  res
-    .status(200)
-    .json(new ApiResponse(200, "Application deleted successfully."));
+  res.status(200).json(
+    new ApiResponse(200, "Application deleted successfully.", {
+      message: "Application deleted successfully.",
+    })
+  );
 });

@@ -1,148 +1,116 @@
+// src/validators/application.validator.js
+
 import { body } from "express-validator";
 import validate from "../middleware/validate.js";
+import {
+  APPLICATION_STATUS,
+  APPLICATION_PLATFORMS,
+  WORK_MODES,
+  EMPLOYMENT_TYPES,
+  PRIORITIES,
+  CURRENCIES,
+} from "../constants/application.constants.js";
 
-const STATUS = [
-  "Wishlist",
-  "Applied",
-  "OA Received",
-  "OA Cleared",
-  "Interview Scheduled",
-  "Offer",
-  "Rejected",
-  "Ghosted",
-];
+const companyValidation = (optional = false) => {
+  const chain = body("company").trim();
 
-const PLATFORMS = [
-  "LinkedIn",
-  "Naukri",
-  "Instahyre",
-  "Wellfound",
-  "Cutshort",
-  "Referral",
-  "Company Website",
-  "Other",
-];
+  if (optional) {
+    chain.optional();
+  }
 
-const WORK_MODES = ["Remote", "Hybrid", "Onsite"];
+  return chain.notEmpty().withMessage("Company is required.");
+};
 
-const PRIORITIES = ["Low", "Medium", "High"];
+const roleValidation = (optional = false) => {
+  const chain = body("role").trim();
 
-export const createApplicationValidator = [
-  body("company")
-    .trim()
-    .notEmpty()
-    .withMessage("Company name is required."),
+  if (optional) {
+    chain.optional();
+  }
 
-  body("role")
-    .trim()
-    .notEmpty()
-    .withMessage("Role is required."),
+  return chain.notEmpty().withMessage("Role is required.");
+};
 
-  body("platform")
-    .isIn(PLATFORMS)
-    .withMessage("Invalid platform."),
-
+const applicationValidators = [
   body("status")
     .optional()
-    .isIn(STATUS)
+    .isIn(APPLICATION_STATUS)
     .withMessage("Invalid status."),
+
+  body("platform")
+    .optional()
+    .isIn(APPLICATION_PLATFORMS)
+    .withMessage("Invalid platform."),
 
   body("workMode")
     .optional()
     .isIn(WORK_MODES)
     .withMessage("Invalid work mode."),
 
+  body("employmentType")
+    .optional()
+    .isIn(EMPLOYMENT_TYPES)
+    .withMessage("Invalid employment type."),
+
   body("priority")
     .optional()
     .isIn(PRIORITIES)
     .withMessage("Invalid priority."),
 
+  body("currency")
+    .optional()
+    .isIn(CURRENCIES)
+    .withMessage("Invalid currency."),
+
+  body("location")
+    .optional()
+    .trim(),
+
+  body("salary")
+    .optional({ values: "falsy" })
+    .isFloat({ min: 0 })
+    .withMessage("Salary must be a positive number."),
+
   body("jobUrl")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isURL()
     .withMessage("Invalid job URL."),
 
   body("appliedDate")
-    .notEmpty()
-    .withMessage("Applied date is required.")
+    .optional()
     .isISO8601()
     .withMessage("Invalid applied date."),
 
-  body("interviewDate")
-    .optional({ checkFalsy: true })
+  body("deadline")
+    .optional({ values: "falsy" })
     .isISO8601()
-    .withMessage("Invalid interview date."),
+    .withMessage("Invalid deadline."),
 
   body("followUpDate")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .withMessage("Invalid follow-up date."),
 
-  body("referral")
+  body("referred")
     .optional()
     .isBoolean()
-    .withMessage("Referral must be true or false."),
+    .withMessage("Referred must be true or false."),
 
+  body("notes")
+    .optional()
+    .trim(),
+];
+
+export const createApplicationValidator = [
+  companyValidation(),
+  roleValidation(),
+  ...applicationValidators,
   validate,
 ];
 
 export const updateApplicationValidator = [
-  body("company")
-    .optional()
-    .trim()
-    .notEmpty()
-    .withMessage("Company name cannot be empty."),
-
-  body("role")
-    .optional()
-    .trim()
-    .notEmpty()
-    .withMessage("Role cannot be empty."),
-
-  body("platform")
-    .optional()
-    .isIn(PLATFORMS)
-    .withMessage("Invalid platform."),
-
-  body("status")
-    .optional()
-    .isIn(STATUS)
-    .withMessage("Invalid status."),
-
-  body("workMode")
-    .optional()
-    .isIn(WORK_MODES)
-    .withMessage("Invalid work mode."),
-
-  body("priority")
-    .optional()
-    .isIn(PRIORITIES)
-    .withMessage("Invalid priority."),
-
-  body("jobUrl")
-    .optional({ checkFalsy: true })
-    .isURL()
-    .withMessage("Invalid job URL."),
-
-  body("appliedDate")
-    .optional()
-    .isISO8601()
-    .withMessage("Invalid applied date."),
-
-  body("interviewDate")
-    .optional({ checkFalsy: true })
-    .isISO8601()
-    .withMessage("Invalid interview date."),
-
-  body("followUpDate")
-    .optional({ checkFalsy: true })
-    .isISO8601()
-    .withMessage("Invalid follow-up date."),
-
-  body("referral")
-    .optional()
-    .isBoolean()
-    .withMessage("Referral must be true or false."),
-
+  companyValidation(true),
+  roleValidation(true),
+  ...applicationValidators,
   validate,
 ];

@@ -1,11 +1,14 @@
+// src/middleware/validate.js
+
 import { validationResult } from "express-validator";
 import ApiError from "../utils/ApiError.js";
 
 const validate = (req, res, next) => {
-  const errors = validationResult(req);
+  const { array, isEmpty } = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return next(new ApiError(400, errors.array()[0].msg));
+  if (!isEmpty()) {
+    const [{ msg }] = array({ onlyFirstError: true });
+    return next(new ApiError(400, msg));
   }
 
   next();
