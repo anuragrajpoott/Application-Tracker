@@ -4,11 +4,12 @@ import { validationResult } from "express-validator";
 import ApiError from "../utils/ApiError.js";
 
 const validate = (req, res, next) => {
-  const { array, isEmpty } = validationResult(req);
+  const errors = validationResult(req);
 
-  if (!isEmpty()) {
-    const [{ msg }] = array({ onlyFirstError: true });
-    return next(new ApiError(400, msg));
+  if (!errors.isEmpty()) {
+    return next(
+      new ApiError(400, errors.array({ onlyFirstError: true })[0].msg)
+    );
   }
 
   next();
