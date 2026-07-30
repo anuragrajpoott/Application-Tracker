@@ -1,14 +1,14 @@
-// src/components/ApplicationForm.jsx
+// src/components/application/ApplicationForm.jsx
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "./Button.jsx";
-import Input from "./Input.jsx";
-import Select from "./Select.jsx";
-import Textarea from "./Textarea.jsx";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import Select from "../ui/Select";
+import Textarea from "../ui/Textarea";
 
-import { OPTIONS } from "../utils/constants.js";
+import { OPTIONS } from "../../utils/constants";
 
 export default function ApplicationForm({
   application,
@@ -28,12 +28,19 @@ export default function ApplicationForm({
     reset(application);
   }, [application, reset]);
 
-  const renderError = (field) =>
-    errors[field] && (
+  const submitLabel = application
+    ? "Update Application"
+    : "Add Application";
+
+  const renderError = (field) => {
+    if (!errors[field]) return null;
+
+    return (
       <p className="mt-1 text-sm text-red-600">
         {errors[field].message}
       </p>
     );
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -223,7 +230,7 @@ export default function ApplicationForm({
 
       <div className="flex justify-end">
         <Button type="submit" loading={loading}>
-          {application ? "Update Application" : "Add Application"}
+          {submitLabel}
         </Button>
       </div>
     </form>

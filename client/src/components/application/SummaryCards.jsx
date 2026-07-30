@@ -1,45 +1,44 @@
-// src/components/SummaryCards.jsx
+// src/components/application/SummaryCards.jsx
 
 export default function SummaryCards({ applications }) {
-  const total = applications.length;
+  const summary = applications.reduce(
+    (counts, { status }) => {
+      counts.total += 1;
 
-  const applied = applications.filter(
-    ({ status }) => status === "Applied"
-  ).length;
+      switch (status) {
+        case "Applied":
+          counts.applied += 1;
+          break;
+        case "Interview Scheduled":
+          counts.interviews += 1;
+          break;
+        case "Offer":
+          counts.offers += 1;
+          break;
+        case "Rejected":
+          counts.rejected += 1;
+          break;
+        default:
+          break;
+      }
 
-  const interviews = applications.filter(
-    ({ status }) => status === "Interview Scheduled"
-  ).length;
-
-  const offers = applications.filter(
-    ({ status }) => status === "Offer"
-  ).length;
-
-  const rejected = applications.filter(
-    ({ status }) => status === "Rejected"
-  ).length;
+      return counts;
+    },
+    {
+      total: 0,
+      applied: 0,
+      interviews: 0,
+      offers: 0,
+      rejected: 0,
+    }
+  );
 
   const cards = [
-    {
-      title: "Total",
-      value: total,
-    },
-    {
-      title: "Applied",
-      value: applied,
-    },
-    {
-      title: "Interviews",
-      value: interviews,
-    },
-    {
-      title: "Offers",
-      value: offers,
-    },
-    {
-      title: "Rejected",
-      value: rejected,
-    },
+    { title: "Total", value: summary.total },
+    { title: "Applied", value: summary.applied },
+    { title: "Interviews", value: summary.interviews },
+    { title: "Offers", value: summary.offers },
+    { title: "Rejected", value: summary.rejected },
   ];
 
   return (

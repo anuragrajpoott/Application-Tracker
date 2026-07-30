@@ -2,9 +2,9 @@
 
 import { Route, Routes } from "react-router-dom";
 
-import Layout from "../layout/Layout.jsx";
-import Home from "../pages/Home.jsx";
-import NotFound from "../pages/NotFound.jsx";
+import Layout from "../layout/Layout";
+import Home from "../pages/Home";
+import NotFound from "../pages/NotFound";
 
 export default function AppRoutes() {
   return (

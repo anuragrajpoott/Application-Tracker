@@ -1,4 +1,4 @@
-// src/components/Button.jsx
+// src/components/ui/Button.jsx
 
 import clsx from "clsx";
 
@@ -26,14 +26,16 @@ export default function Button({
   size = "md",
   loading = false,
   disabled = false,
-  className,
+  className = "",
   ...props
 }) {
+  const isDisabled = disabled || loading;
+
   return (
     <button
       type={type}
-      disabled={disabled || loading}
-      aria-disabled={disabled || loading}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
       className={clsx(
         "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-colors",
         "focus:outline-none focus:ring-2 focus:ring-offset-2",

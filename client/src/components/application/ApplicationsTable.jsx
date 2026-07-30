@@ -1,9 +1,9 @@
-// src/components/ApplicationsTable.jsx
+// src/components/application/ApplicationsTable.jsx
 
 import { Pencil, Trash2 } from "lucide-react";
 
-import Badge from "./Badge.jsx";
-import Button from "./Button.jsx";
+import Badge from "../ui/Badge";
+import Button from "../ui/Button";
 
 export default function ApplicationsTable({
   applications,
@@ -40,54 +40,67 @@ export default function ApplicationsTable({
           </thead>
 
           <tbody>
-            {applications.map((application) => (
-              <tr
-                key={application._id}
-                className="border-b last:border-0 hover:bg-slate-50"
-              >
-                <td className="px-6 py-4 font-medium text-slate-900">
-                  {application.company}
-                </td>
+            {applications.map((application) => {
+              const {
+                _id,
+                company,
+                role,
+                status,
+                platform,
+                appliedDate,
+              } = application;
 
-                <td className="px-6 py-4 text-slate-600">
-                  {application.role}
-                </td>
+              const formattedDate = appliedDate
+                ? new Date(appliedDate).toLocaleDateString()
+                : "-";
 
-                <td className="px-6 py-4">
-                  <Badge status={application.status} />
-                </td>
+              return (
+                <tr
+                  key={_id}
+                  className="border-b last:border-0 hover:bg-slate-50"
+                >
+                  <td className="px-6 py-4 font-medium text-slate-900">
+                    {company}
+                  </td>
 
-                <td className="px-6 py-4 text-slate-600">
-                  {application.platform}
-                </td>
+                  <td className="px-6 py-4 text-slate-600">
+                    {role}
+                  </td>
 
-                <td className="px-6 py-4 text-slate-600">
-                  {application.appliedDate
-                    ? new Date(application.appliedDate).toLocaleDateString()
-                    : "-"}
-                </td>
+                  <td className="px-6 py-4">
+                    <Badge status={status} />
+                  </td>
 
-                <td className="px-6 py-4">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="secondary"
-                      onClick={() => onEdit(application)}
-                      aria-label="Edit application"
-                    >
-                      <Pencil size={16} />
-                    </Button>
+                  <td className="px-6 py-4 text-slate-600">
+                    {platform}
+                  </td>
 
-                    <Button
-                      variant="danger"
-                      onClick={() => onDelete(application)}
-                      aria-label="Delete application"
-                    >
-                      <Trash2 size={16} />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  <td className="px-6 py-4 text-slate-600">
+                    {formattedDate}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => onEdit(application)}
+                        aria-label="Edit application"
+                      >
+                        <Pencil size={16} />
+                      </Button>
+
+                      <Button
+                        variant="danger"
+                        onClick={() => onDelete(application)}
+                        aria-label="Delete application"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

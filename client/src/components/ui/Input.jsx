@@ -1,4 +1,4 @@
-// src/components/Input.jsx
+// src/components/ui/Input.jsx
 
 import { forwardRef } from "react";
 import clsx from "clsx";
@@ -10,7 +10,7 @@ const Input = forwardRef(function Input(
   return (
     <input
       ref={ref}
-      type={type || "text"}
+      type={type}
       className={clsx(
         "w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition",
         "placeholder:text-slate-400",

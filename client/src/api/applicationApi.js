@@ -1,6 +1,6 @@
 // src/api/applicationApi.js
 
-import api from "./axios.js";
+import api from "./axios";
 
 const ENDPOINT = "/applications";
 

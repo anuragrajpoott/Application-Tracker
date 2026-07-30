@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import {
-  getApplications,
   createApplication,
-  updateApplication,
   deleteApplication,
+  getApplications,
+  updateApplication,
 } from "../api/applicationApi";
 
-import Loader from "../components/ui/Loader";
-import Button from "../components/ui/Button";
-import Modal from "../components/ui/Modal";
+import Charts from "../components/application/Charts";
+import Filter from "../components/application/Filter";
+import SummaryCards from "../components/application/SummaryCards";
+import ApplicationsTable from "../components/application/ApplicationsTable";
+import ApplicationForm from "../components/application/ApplicationForm";
+import Pagination from "../components/pagination/Pagination";
 
-import SummaryCards from "../components/home/SummaryCards";
-import Charts from "../components/home/Charts";
-import Filters from "../components/home/Filters";
-import ApplicationsTable from "../components/home/ApplicationsTable";
-import ApplicationForm from "../components/forms/ApplicationForm";
-import Pagination from "../components/ui/Pagination";
+import Button from "../components/ui/Button";
+import Loader from "../components/ui/Loader";
+import Modal from "../components/ui/Modal";
 
 const INITIAL_FILTERS = {
   search: "",
@@ -43,50 +43,54 @@ export default function Home() {
   const [selectedApplication, setSelectedApplication] = useState(null);
 
   useEffect(() => {
-    fetchApplications();
+    loadApplications();
   }, [page, filters]);
 
-  async function fetchApplications() {
+  const loadApplications = async () => {
     setLoading(true);
 
     try {
-      const response = await getApplications({
+      const { data } = await getApplications({
         page,
         ...filters,
       });
 
-      setApplications(response.data.applications);
-      setTotalPages(response.data.totalPages);
+      setApplications(data.applications);
+      setTotalPages(data.totalPages);
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Failed to load applications."
+        error?.response?.data?.message ||
+          "Failed to load applications."
       );
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  function openCreateModal() {
+  const openCreateModal = () => {
     setSelectedApplication(null);
     setIsModalOpen(true);
-  }
+  };
 
-  function openEditModal(application) {
+  const openEditModal = (application) => {
     setSelectedApplication(application);
     setIsModalOpen(true);
-  }
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     setSelectedApplication(null);
     setIsModalOpen(false);
-  }
+  };
 
-  async function handleSubmit(formData) {
+  const handleSubmit = async (formData) => {
     setSubmitting(true);
 
     try {
       if (selectedApplication) {
-        await updateApplication(selectedApplication._id, formData);
+        await updateApplication(
+          selectedApplication._id,
+          formData
+        );
 
         toast.success("Application updated successfully.");
       } else {
@@ -96,17 +100,18 @@ export default function Home() {
       }
 
       closeModal();
-      fetchApplications();
+      await loadApplications();
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Failed to save application."
+        error?.response?.data?.message ||
+          "Failed to save application."
       );
     } finally {
       setSubmitting(false);
     }
-  }
+  };
 
-  async function handleDelete(application) {
+  const handleDelete = async (application) => {
     const confirmed = window.confirm(
       `Delete application for "${application.company}"?`
     );
@@ -118,27 +123,28 @@ export default function Home() {
 
       toast.success("Application deleted successfully.");
 
-      fetchApplications();
+      await loadApplications();
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Failed to delete application."
+        error?.response?.data?.message ||
+          "Failed to delete application."
       );
     }
-  }
+  };
 
-  function handleFiltersChange(updatedFilters) {
+  const handleFiltersChange = (updatedFilters) => {
     setPage(1);
     setFilters(updatedFilters);
-  }
+  };
 
-  function handleFiltersReset() {
+  const handleFiltersReset = () => {
     setPage(1);
     setFilters(INITIAL_FILTERS);
-  }
+  };
 
-  function handlePageChange(nextPage) {
-    setPage(nextPage);
-  }
+  const modalTitle = selectedApplication
+    ? "Edit Application"
+    : "Add Application";
 
   if (loading) {
     return <Loader />;
@@ -166,7 +172,7 @@ export default function Home() {
 
       <Charts applications={applications} />
 
-      <Filters
+      <Filter
         filters={filters}
         onChange={handleFiltersChange}
         onReset={handleFiltersReset}
@@ -181,17 +187,13 @@ export default function Home() {
       <Pagination
         page={page}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={setPage}
       />
 
       <Modal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         onClose={closeModal}
-        title={
-          selectedApplication
-            ? "Edit Application"
-            : "Add Application"
-        }
+        title={modalTitle}
       >
         <ApplicationForm
           application={selectedApplication}

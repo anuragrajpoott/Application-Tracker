@@ -1,6 +1,6 @@
-// src/components/Pagination.jsx
+// src/components/pagination/Pagination.jsx
 
-import Button from "./Button.jsx";
+import Button from "../ui/Button";
 
 export default function Pagination({
   page,
@@ -11,17 +11,15 @@ export default function Pagination({
     return null;
   }
 
-  function handlePrevious() {
-    if (page > 1) {
-      onPageChange(page - 1);
-    }
-  }
+  const handlePrevious = () => {
+    if (page === 1) return;
+    onPageChange(page - 1);
+  };
 
-  function handleNext() {
-    if (page < totalPages) {
-      onPageChange(page + 1);
-    }
-  }
+  const handleNext = () => {
+    if (page === totalPages) return;
+    onPageChange(page + 1);
+  };
 
   return (
     <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">

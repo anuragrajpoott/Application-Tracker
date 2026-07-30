@@ -1,4 +1,4 @@
-// src/components/Charts.jsx
+// src/components/application/Charts.jsx
 
 import {
   Cell,
@@ -18,9 +18,9 @@ const COLORS = [
 ];
 
 export default function Charts({ applications }) {
-  const statusCounts = applications.reduce((acc, { status }) => {
-    acc[status] = (acc[status] ?? 0) + 1;
-    return acc;
+  const statusCounts = applications.reduce((counts, { status }) => {
+    counts[status] = (counts[status] ?? 0) + 1;
+    return counts;
   }, {});
 
   const data = Object.entries(statusCounts).map(([name, value]) => ({
@@ -28,13 +28,15 @@ export default function Charts({ applications }) {
     value,
   }));
 
+  const hasData = data.length > 0;
+
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 className="mb-6 text-lg font-semibold text-slate-900">
         Applications by Status
       </h2>
 
-      {data.length === 0 ? (
+      {!hasData ? (
         <p className="text-slate-500">
           No data available.
         </p>
@@ -49,9 +51,9 @@ export default function Charts({ applications }) {
                 outerRadius={100}
                 label
               >
-                {data.map((_, index) => (
+                {data.map(({ name }, index) => (
                   <Cell
-                    key={index}
+                    key={name}
                     fill={COLORS[index % COLORS.length]}
                   />
                 ))}

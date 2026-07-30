@@ -1,24 +1,22 @@
-// src/components/Filters.jsx
+// src/components/application/Filter.jsx
 
-import Button from "./Button.jsx";
-import Input from "./Input.jsx";
-import Select from "./Select.jsx";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import Select from "../ui/Select";
 
-import { OPTIONS } from "../utils/constants.js";
+import { OPTIONS } from "../../utils/constants";
 
-export default function Filters({
+export default function Filter({
   filters,
   onChange,
   onReset,
 }) {
-  function handleChange(e) {
-    const { name, value } = e.target;
-
+  const handleChange = ({ target: { name, value } }) => {
     onChange({
       ...filters,
       [name]: value,
     });
-  }
+  };
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

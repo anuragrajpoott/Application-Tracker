@@ -1,4 +1,4 @@
-// src/components/Loader.jsx
+// src/components/ui/Loader.jsx wow
 
 export default function Loader({ text = "Loading..." }) {
   return (

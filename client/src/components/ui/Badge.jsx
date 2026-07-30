@@ -1,4 +1,4 @@
-// src/components/Badge.jsx
+// src/components/ui/Badge.jsx
 
 import clsx from "clsx";
 
@@ -12,7 +12,11 @@ const variants = {
 
 const defaultVariant = "bg-slate-100 text-slate-700";
 
-export default function Badge({ status, children, className }) {
+export default function Badge({
+  status,
+  children,
+  className = "",
+}) {
   return (
     <span
       className={clsx(

@@ -1,4 +1,4 @@
-// src/components/Textarea.jsx
+// src/components/ui/Textarea.jsx
 
 import { forwardRef } from "react";
 import clsx from "clsx";
